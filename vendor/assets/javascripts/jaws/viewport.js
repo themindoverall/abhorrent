@@ -148,7 +148,7 @@ jaws.Viewport = function ViewPort(options) {
   */
   this.apply = function(func) {
     this.context.save()
-    this.context.translate(-this.x, -this.y)
+    this.context.translate(-Math.floor(this.x), -Math.floor(this.y))
     func()
     this.context.restore()
   };

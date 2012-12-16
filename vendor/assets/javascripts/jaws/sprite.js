@@ -203,10 +203,10 @@ jaws.Sprite.prototype.cacheOffsets = function() {
   
   this.width = this.image.width * this.scale_x
   this.height = this.image.height * this.scale_y
-  this.left_offset   = this.width * this.anchor_x
-  this.top_offset    = this.height * this.anchor_y
-  this.right_offset  = this.width * (1.0 - this.anchor_x)
-  this.bottom_offset = this.height * (1.0 - this.anchor_y)
+  this.left_offset   = Math.floor(this.width * this.anchor_x)
+  this.top_offset    = Math.floor(this.height * this.anchor_y)
+  this.right_offset  = Math.floor(this.width * (1.0 - this.anchor_x))
+  this.bottom_offset = Math.floor(this.height * (1.0 - this.anchor_y))
 
   if(this.cached_rect) this.cached_rect.resizeTo(this.width, this.height);
   return this
@@ -264,9 +264,11 @@ jaws.Sprite.prototype.draw = function() {
   if(this.dom)    { return this.updateDiv() }
 
   this.context.save()
-  this.context.translate(this.x, this.y)
+  this.context.translate(Math.floor(this.x), Math.floor(this.y))
   if(this.angle!=0) { jaws.context.rotate(this.angle * Math.PI / 180) }
-  this.flipped && this.context.scale(-1, 1)
+  if (this.flipped) {
+    this.context.scale(-1, 1);
+  }
   this.context.globalAlpha = this.alpha
   this.context.translate(-this.left_offset, -this.top_offset) // Needs to be separate from above translate call cause of flipped
   this.context.drawImage(this.image, 0, 0, this.width, this.height)

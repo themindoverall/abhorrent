@@ -4,6 +4,7 @@
 
 $ ->
   jaws.unpack()
+  jaws.preventDefaultKeys( ["space", "up", "down", "left", "right", "z", "x"] )
   jaws.assets.root = "assets/"
   jaws.assets.add([
       "fonts/secombe-20.font.png",
@@ -12,7 +13,8 @@ $ ->
       "hellset.png",
       "shadowoverlay.png",
       "swordhero.png",
-      "villain.png"
+      "villain.png",
+      "castle.json"
   ])
 
   innerCanvas = document.createElement('CANVAS')

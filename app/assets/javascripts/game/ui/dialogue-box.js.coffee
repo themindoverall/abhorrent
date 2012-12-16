@@ -69,8 +69,10 @@ class Game.UI.DialogueBox extends Game.UI.Box
     @text = text
     @compiled = this._compileText(text)
   _loadStyles: () ->
+    font = new Game.UI.Font('fonts/secombe-20.font.png', '#fff', -10)
     @styles =
-      default: new Game.UI.Font('fonts/secombe-20.font.png', '#fff', -8)
+      default: font
+      player: font.atColor('#976A97')
       ###
       header: new Game.UI.Font('fonts/museoslab700.font.png', '#bbb', 2)
       em: new Game.UI.Font('fonts/museoslab900.font.png', '#fff', 2)

@@ -25,16 +25,28 @@ class Game.Session
 		@ctx.mozImageSmoothingEnabled = false
 		@ctx.webkitImageSmoothingEnabled = false
 	setup: () ->
-		@dialog = new Game.UI.DialogueBox('It\'s just a line break,\nBro!!', 640)
-		@player = new Game.Player(x:110, y:120, anchor: "center")
+		@dialog = new Game.UI.DialogueBox('It\'s just a line break,\n<s class="player">Bro!!</s>', 640)
+		@player = new Game.Player(this, {x:110, y:0})
+		map = jaws.assets.get('castle.json')
+		@level = new Game.Level(this, map)
+		@viewport = new jaws.Viewport({})
 
 	update: () ->
 		elapsed = jaws.game_loop.tick_duration * 0.001
 		@player.update(elapsed)
+		@viewport.centerAround(@player)
 	draw: () ->
 		jaws.clear()
-		@player.draw()
+		@level.draw(@viewport)
+		@viewport.draw(@player)
+
 		tmp = @canvas.width
 		@ctx.clearRect(0,0,@canvas.width,@canvas.height)
 		@ctx.drawImage(jaws.canvas, 0, 0, @canvas.width, @canvas.height)
 		@dialog.draw({x: 0, y:jaws.height - 100 - 10}, @ctx)
+	collideRect: (rect) ->
+		tiles = @level.collisionMap.atRect(rect)
+		return false if tiles.length == 0
+		tiles[0]
+
+		

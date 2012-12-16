@@ -16,6 +16,9 @@ class Game.UI.Font
       ctx.fillRect(0, 0, @image.width, @image.height)
       @image = canvas
 
+  atColor: (newColor) ->
+    new Game.UI.Font(@name, newColor, @spacing)
+
   widthForString: (s) ->
     width = 0
     for i in [0..s.length-1]
