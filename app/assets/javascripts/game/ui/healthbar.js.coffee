@@ -4,7 +4,7 @@ class Game.UI.Healthbar extends Game.UI.Box
 	getMaxSize: () ->
 		[300, 16]
 	draw: (rect, ctx) ->
-		ctx.strokeStyle = '#fff'
-		ctx.strokeRect(rect.x, rect.y, rect.w, rect.h)
-		ctx.fillStyle = '#fff'
+		ctx.strokeStyle = '#000'
 		ctx.fillRect(rect.x, rect.y, rect.w * (@player.health / @player.maxHealth), rect.h)
+		ctx.strokeRect(rect.x, rect.y, rect.w, rect.h)x
+		
