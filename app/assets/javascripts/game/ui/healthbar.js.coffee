@@ -6,5 +6,5 @@ class Game.UI.Healthbar extends Game.UI.Box
 	draw: (rect, ctx) ->
 		ctx.strokeStyle = '#000'
 		ctx.fillRect(rect.x, rect.y, rect.w * (@player.health / @player.maxHealth), rect.h)
-		ctx.strokeRect(rect.x, rect.y, rect.w, rect.h)x
+		ctx.strokeRect(rect.x, rect.y, rect.w, rect.h)
 		
