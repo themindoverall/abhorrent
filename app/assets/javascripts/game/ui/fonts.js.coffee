@@ -35,7 +35,7 @@ class Game.UI.Font
     charX = @indices[c]
     charY = 0;
     charWidth = @widthMap[c]
-    charHeight = (@height-1)
+    charHeight = (@height)
     
     ctx.drawImage( 
       @image,

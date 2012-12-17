@@ -6,7 +6,7 @@ class Game.UI.DialogueBox extends Game.UI.Box
     LEFT: 0
     RIGHT: 1
     CENTER: 2
-  constructor: (text, width) ->
+  constructor: (text, @pos, width, @duration) ->
     @lineHeight = 30
     @border = {width: width, height: 10000} 
     @align = DialogueBox.ALIGN.LEFT
@@ -18,8 +18,27 @@ class Game.UI.DialogueBox extends Game.UI.Box
     @cached.setAttribute('height', @border.height)
     ctx = @cached.getContext('2d')
     this.drawBox({x: 0, y: 0, width: @border.width, height: @border.height}, ctx)
-  draw: (rect, ctx) ->
-    ctx.drawImage(@cached, rect.x, rect.y, @border.width, @border.height)
+    @timer = @duration
+    @visible = true
+    @alpha = 1
+  update: (elapsed) ->
+    return unless @duration
+    @timer -= elapsed
+    if @timer < 0
+      @visible = false
+      return
+
+    t = 0.3
+    if @timer < 0.3
+      t = @timer
+    else if @duration - @timer < 0.3
+      t = @duration - @timer
+    @alpha = t / 0.3
+  draw: (ctx) ->
+    ctx.save()
+    ctx.globalAlpha = @alpha
+    ctx.drawImage(@cached, @pos.x, @pos.y, @border.width, @border.height)
+    ctx.restore()
   drawBox: (rect, ctx) ->
     x = rect.x
     y = rect.y
@@ -72,7 +91,8 @@ class Game.UI.DialogueBox extends Game.UI.Box
     font = new Game.UI.Font('fonts/secombe-20.font.png', '#fff', -10)
     @styles =
       default: font
-      player: font.atColor('#976A97')
+      player: font.atColor('#000')
+      hero: font.atColor('#0066FF')
       ###
       header: new Game.UI.Font('fonts/museoslab700.font.png', '#bbb', 2)
       em: new Game.UI.Font('fonts/museoslab900.font.png', '#fff', 2)

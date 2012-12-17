@@ -32,11 +32,46 @@
          "width":20,
          "x":0,
          "y":0
+        }, 
+        {
+         "height":10,
+         "name":"Spawns",
+         "objects":[
+                {
+                 "height":0,
+                 "name":"player",
+                 "properties":
+                    {
+
+                    },
+                 "type":"Player",
+                 "width":0,
+                 "x":28,
+                 "y":5
+                }, 
+                {
+                 "height":0,
+                 "name":"swordhero1",
+                 "properties":
+                    {
+
+                    },
+                 "type":"Swordhero",
+                 "width":0,
+                 "x":224,
+                 "y":64
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":20,
+         "x":0,
+         "y":0
         }],
  "orientation":"orthogonal",
  "properties":
     {
-
+     "controller":"CastleLevel"
     },
  "tileheight":16,
  "tilesets":[

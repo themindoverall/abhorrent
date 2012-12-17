@@ -38,7 +38,7 @@ jaws.SpriteSheet = function SpriteSheet(options) {
     var image = (jaws.isDrawable(options.image) ? options.image : jaws.assets.get(options.image))
     this.frame_size[0] *= options.scale_image
     this.frame_size[1] *= options.scale_image
-    options.image = jaws.gfx.retroScaleImage(image, options.scale_image)
+    this.image = jaws.gfx.retroScaleImage(image, options.scale_image)
   }
 
   var index = 0

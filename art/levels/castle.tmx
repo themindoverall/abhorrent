@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="20" height="10" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="controller" value="CastleLevel"/>
+ </properties>
  <tileset firstgid="1" name="castleset" tilewidth="16" tileheight="16">
   <image source="../../app/assets/images/castleset.png" width="32" height="32"/>
  </tileset>
@@ -621,4 +624,8 @@
    <tile gid="5"/>
   </data>
  </layer>
+ <objectgroup name="Spawns" width="20" height="10">
+  <object name="player" type="Player" x="28" y="5"/>
+  <object name="swordhero1" type="Swordhero" x="224" y="64"/>
+ </objectgroup>
 </map>

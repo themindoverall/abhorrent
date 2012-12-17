@@ -1,5 +1,5 @@
 PPM = 16
-GRAVITY = 24.0 * PPM
+GRAVITY = 36.0 * PPM
 
 Game.Platformer = {}
 
@@ -102,6 +102,7 @@ class Game.Platformer.WallrideState extends Game.Platformer.State
 		@sprite.anim = 'wallride'
 		@sprite.vx = 0
 		@sprite.vy = @sprite.stats.wallrideSpeed
+		@sprite.sensors.bottom.enabled = true
 		if @sprite.sensors.left.hit
 			@dir = -1
 			@sensor = @sprite.sensors.left
@@ -113,6 +114,8 @@ class Game.Platformer.WallrideState extends Game.Platformer.State
 			@sprite.flipped = false
 			@sprite.x = @sprite.sensors.right.hit.x - @sprite.width * 0.5
 		@timer = 0
+	exit: () ->
+		@sprite.sensors.bottom.enabled = false
 	execute: (elapsed) ->
 		if @sprite.controller
 			if @sprite.controller.movement.x / @dir <= 0
@@ -129,14 +132,14 @@ class Game.Platformer.WallrideState extends Game.Platformer.State
 
 class Game.Platformer.WalljumpState extends Game.Platformer.State
 	enter: () ->
-		@sprite.hasGravity = true
+		@sprite.hasGravity = false
 		@sprite.anim = 'jump'
 		if @sprite.sensors.left.hit
 			@dir = -1
 		else
 			@dir = 1
-		@sprite.vx = -@dir * @sprite.stats.wallJumpSpeed * 0.5
-		@sprite.vy = -@sprite.stats.wallJumpSpeed * 1.0
+		@sprite.vx = -@dir * @sprite.stats.wallJumpSpeed
+		@sprite.vy = -@sprite.stats.wallJumpSpeed
 		@timer = @sprite.stats.jumpTime
 		@sprite.anim = 'jump'
 		@sprite.sensors.top.enabled = true
@@ -146,17 +149,19 @@ class Game.Platformer.WalljumpState extends Game.Platformer.State
 	execute: (elapsed) ->
 		@sprite.checkWalls(elapsed)
 
-		if @jump
+		@timer -= elapsed
+		if @jump && @timer > 0
 			@jump = @sprite.controller.jump
 		else
-			@sprite.vx = -@dir * @sprite.stats.wallJumpSpeed * 0.3
-		@timer -= elapsed
+			@sprite.vx = -@dir * @sprite.stats.wallJumpSpeed * 0.9
+			@sprite.hasGravity = true
+
 		if @sprite.sensors.top.hit
 			@sprite.y = @sprite.sensors.top.hit.bottom + @sprite.height
 			@sprite.vy = 0
 			return 'air'
 
-		if @timer <= 0 or (!@jump && @sprite.vy > 0)
+		if @sprite.vy > 0
 			return 'air'
 		null
 class Game.Platformer.Controller
@@ -243,7 +248,7 @@ class Game.Platformer.Sprite extends jaws.Sprite
 			@vy += GRAVITY * elapsed
 		this.move(@vx * elapsed, @vy * elapsed)
 	setState: (state) ->
-		return if state == null or state == @state
+		return if state == null or state == @state or !@states[state]
 		@stateObject.exit() if @state
 		@state = state
 		@stateObject = @states[state]

@@ -46,18 +46,18 @@ class Game.UI.LayoutBox extends Game.UI.Box
 
 class Game.UI.PinBox extends Game.UI.LayoutBox
   LocDefs:
-    top: 1           #0b0001
-    topRight: 3      #0b0011
-    right: 2         #0b0010
-    bottomRight: 6   #0b0110
-    bottom: 4        #0b0100
-    bottomLeft: 12   #0b1100
-    left: 8          #0b1000
-    topLeft: 9       #0b1001
+    top: 0b0001
+    topRight: 0b0011
+    right: 0b0010
+    bottomRight: 0b0110
+    bottom: 0b0100
+    bottomLeft: 0b1100
+    left: 0b1000
+    topLeft: 0b1001
   constructor: () ->
     super()
     @locations = {}
-    @padding = 0
+    @padding = 5
     @_nextId = 1
   add: (box, loc) ->
     box._pinbox_id = @_nextId++
@@ -68,7 +68,7 @@ class Game.UI.PinBox extends Game.UI.LayoutBox
     loc = @locations[box._pinbox_id]
     boxSize = box.getMaxSize()
     padding = @padding
-    if box.maxSize[0] > rect.w - (padding * 2)
+    if boxSize[0] > rect.w - (padding * 2)
       result.x = rect.x + padding
       result.w = rect.w - (padding * 2) 
     else
@@ -76,9 +76,12 @@ class Game.UI.PinBox extends Game.UI.LayoutBox
         result.x = rect.x + padding
         result.w = boxSize[0]
       else if (loc & @LocDefs.right) != 0
-        result.x = rect.x + rect.w - box.maxSize[0] - padding
+        result.x = rect.x + rect.w - boxSize[0] - padding
         result.w = boxSize[0]
-    if box.maxSize[1] > rect.h + padding
+      else
+        result.x = rect.x + (rect.w - boxSize[0]) * 0.5
+        result.w = boxSize[0]
+    if boxSize[1] > rect.h + padding
       result.y = rect.y + padding
       result.h = rect.h - (padding * 2)
     else
@@ -86,6 +89,13 @@ class Game.UI.PinBox extends Game.UI.LayoutBox
         result.y = rect.y + padding
         result.h = boxSize[1]
       else if (loc & @LocDefs.bottom) != 0
-        result.y = rect.y + rect.h - box.maxSize[1] - padding
+        result.y = rect.y + rect.h - boxSize[1] - padding
         result.h = boxSize[1]
+      else
+        console.log loc
+        result.y = rect.y + (rect.y - boxSize[1]) * 0.5
+        result.h = boxSize[1]
+    #console.log 'computed ', result
+    result.x += 0.5
+    result.y += 0.5
     return result

@@ -1,6 +1,6 @@
 //= require jquery
 //= require jaws
-//= require game/main
+//= require game/game
 
 $ ->
   jaws.unpack()
